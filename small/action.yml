@@ -1,4 +1,4 @@
-name: Github Action with TeXLive
+name: Github Action with TeXLive [Small]
 description: Run arbitrary commands in a TeXLive environment.
 author: Cheng XU
 inputs:
