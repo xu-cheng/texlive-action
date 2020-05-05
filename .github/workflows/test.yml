@@ -1,0 +1,17 @@
+name: Test Github Action
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+      - name: Test Action
+        uses: ./small/
+        with:
+          run: |
+            apk add make
+            cd test && make
+      - name: Check pdf files
+        run: |
+          file test/test.pdf | grep -q ' PDF '
