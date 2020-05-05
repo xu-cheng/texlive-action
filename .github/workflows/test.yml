@@ -11,6 +11,7 @@ jobs:
         with:
           run: |
             apk add make
+            tlmgr install blindtext
             cd test && make
       - name: Check pdf files
         run: |
