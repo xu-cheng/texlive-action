@@ -4,7 +4,7 @@
 
 GitHub Action to run arbitrary commands in a [TeXLive](https://www.tug.org/texlive/) environment.
 
-It comes with two favors, `full` and `small`. The `full` favor action has all TeXLive packages installed. The `small` one however only has basic packages installed to reduce its size. You can use `tlmgr install <package>` to install the missing packages.
+It comes with two flavors, `full` and `small`. The `full` action has all TeXLive packages installed. The `small` one however only has basic packages installed to reduce its size. You can use `tlmgr install <package>` to install the missing packages.
 The base image is [alpine](https://alpinelinux.org). Use `apk add <package>` to install additional system packages.
 See [latex-docker](https://github.com/xu-cheng/latex-docker) for the scripts to build the respective docker images.
 
