@@ -7,7 +7,7 @@ inputs:
     required: true
 runs:
   using: docker
-  image: docker://xucheng/texlive-small:latest
+  image: docker://ghcr.io/xu-cheng/texlive-small:latest
   entrypoint: /bin/bash
   args:
     - -c
