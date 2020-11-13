@@ -10,6 +10,8 @@ runs:
   image: docker://ghcr.io/xu-cheng/texlive-full:latest
   entrypoint: /bin/bash
   args:
+    - -eo
+    - pipefail
     - -c
     - ${{ inputs.run }}
 branding:

@@ -12,7 +12,7 @@ This action is suitable to run arbitrary commands in a LaTeX environment. If you
 
 ## Inputs
 
-* `run`: Arbitrary bash codes to be executed.
+* `run`: Arbitrary bash codes to be executed. It will be executed in the form of `bash -eo pipefail -c {input}`.
 
 ## Example
 
