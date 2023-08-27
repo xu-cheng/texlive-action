@@ -24,7 +24,7 @@ This action is suitable to run arbitrary commands in a LaTeX environment. If you
     build_latex:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
         - uses: xu-cheng/texlive-action/full@v1
           with:
             run: |
@@ -40,7 +40,7 @@ This action is suitable to run arbitrary commands in a LaTeX environment. If you
     build_latex:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
         - uses: xu-cheng/texlive-action/small@v1
           with:
             run: |
