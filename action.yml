@@ -1,0 +1,27 @@
+name: Github Action with TeXLive
+description: Run arbitrary commands in a TeXLive environment.
+author: Cheng XU
+inputs:
+  run:
+    description: Arbitrary bash codes to be executed
+    required: true
+  scheme:
+    description: The scheme of TeXLive to be used, either full or small
+    default: full
+  texlive_version:
+    description: The version of TeXLive to be used
+  docker_image:
+    description: The docker image to be used
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        "${GITHUB_ACTION_PATH}/action.sh" \
+          "${{ inputs.scheme }}" \
+          "${{ inputs.texlive_version }}" \
+          "${{ inputs.docker_image }}" \
+          "${{ inputs.run }}"
+branding:
+  icon: book
+  color: blue

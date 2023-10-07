@@ -2,13 +2,19 @@ name: Test Github Action
 on: [push, pull_request]
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        texlive_version: [2020, 2021, 2022, latest]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Test Action
-        uses: ./small/
+        uses: ./
         with:
+          scheme: small
+          texlive_version: ${{ matrix.texlive_version }}
           run: |
             apk add make
             tlmgr install blindtext

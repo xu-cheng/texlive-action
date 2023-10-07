@@ -13,6 +13,9 @@ This action is suitable to run arbitrary commands in a LaTeX environment. If you
 ## Inputs
 
 * `run`: Arbitrary bash codes to be executed. It will be executed in the form of `bash -eo pipefail -c {input}`.
+* `scheme`: The scheme of TeXLive to be used, either full or small. By default, full TeXLive is used.
+* `texlive_version`: The version of TeXLive to be used. Supported inputs include 2020, 2021, 2022, 2023, and latest. By default the latest TeXLive is used. This input cannot co-exist with `docker_image` input.
+* `docker_image`: Custom which docker image to be used. Only [latex-docker images](https://github.com/xu-cheng/latex-docker/pkgs/container/texlive-full) are supported.
 
 ## Example
 
@@ -24,9 +27,10 @@ This action is suitable to run arbitrary commands in a LaTeX environment. If you
     build_latex:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v3
-        - uses: xu-cheng/texlive-action/full@v1
+        - uses: actions/checkout@v4
+        - uses: xu-cheng/texlive-action@v2
           with:
+            scheme: full
             run: |
               apk add make
               make
@@ -40,9 +44,44 @@ This action is suitable to run arbitrary commands in a LaTeX environment. If you
     build_latex:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v3
-        - uses: xu-cheng/texlive-action/small@v1
+        - uses: actions/checkout@v4
+        - uses: xu-cheng/texlive-action@v2
           with:
+            scheme: small
+            run: |
+              apk add make
+              make
+  ```
+
+* Run commands in a 2022 TeXLive environment.
+
+  ```yaml
+  on: [push]
+  jobs:
+    build_latex:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: xu-cheng/texlive-action@v2
+          with:
+            texlive_version: 2022
+            run: |
+              apk add make
+              make
+  ```
+
+* Run commands using custom docker image.
+
+  ```yaml
+  on: [push]
+  jobs:
+    build_latex:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: xu-cheng/texlive-action@v2
+          with:
+            docker_image: ghcr.io/xu-cheng/texlive-full:20230801
             run: |
               apk add make
               make
