@@ -13,7 +13,7 @@ This action is suitable to run arbitrary commands in a LaTeX environment. If you
 ## Inputs
 
 * `run`: Arbitrary bash codes to be executed. It will be executed in the form of `bash -eo pipefail -c {input}`.
-* `scheme`: The scheme of TeXLive to be used, either full or small. By default, full TeXLive is used.
+* `scheme`: The scheme of TeXLive to be used, either full or small. By default, full TeXLive is used. This input cannot co-exist with `docker_image` input.
 * `texlive_version`: The version of TeXLive to be used. Supported inputs include 2020, 2021, 2022, 2023, and latest. By default the latest TeXLive is used. This input cannot co-exist with `docker_image` input.
 * `docker_image`: Custom which docker image to be used. Only [latex-docker images](https://github.com/xu-cheng/latex-docker/pkgs/container/texlive-full) are supported.
 
