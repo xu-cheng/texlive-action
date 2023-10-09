@@ -3,7 +3,10 @@
 set -eo pipefail
 
 run() {
-  echo -e "\033[1;34m$@\033[0m"
+  token="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 10)"
+  echo "::stop-commands::${token}"
+  echo -e "\033[1;34m$*\033[0m"
+  echo "::${token}::"
   "$@"
 }
 
@@ -12,21 +15,16 @@ error() {
   exit 1
 }
 
-scheme="${1}"
-texlive_version="${2}"
-docker_image="${3}"
-run="${4}"
-
-if [[ -n "$scheme" && -n "$docker_image" ]]; then
+if [[ -n "$INPUT_SCHEME" && -n "$INPUT_DOCKER_IMAGE" ]]; then
   error "Input 'scheme' and 'docker_image' cannot co-exist".
 fi
 
-if [[ -n "$texlive_version" && -n "$docker_image" ]]; then
+if [[ -n "$INPUT_TEXLIVE_VERSION" && -n "$INPUT_DOCKER_IMAGE" ]]; then
   error "Input 'texlive_version' and 'docker_image' cannot co-exist".
 fi
 
-if [[ -z "$docker_image" ]]; then
-  case "$texlive_version" in
+if [[ -z "$INPUT_DOCKER_IMAGE" ]]; then
+  case "$INPUT_TEXLIVE_VERSION" in
   "" | "latest" | "2023")
     image_version="latest"
     ;;
@@ -40,10 +38,10 @@ if [[ -z "$docker_image" ]]; then
     image_version="20210301"
     ;;
   *)
-    error "TeX Live version $texlive_version is not supported. The currently supported versions are 2020-2023 or latest."
+    error "TeX Live version $INPUT_TEXLIVE_VERSION is not supported. The currently supported versions are 2020-2023 or latest."
     ;;
   esac
-  docker_image="ghcr.io/xu-cheng/texlive-$scheme:$image_version"
+  INPUT_DOCKER_IMAGE="ghcr.io/xu-cheng/texlive-$INPUT_SCHEME:$image_version"
 fi
 
 # ref: https://docs.miktex.org/manual/envvars.html
@@ -110,6 +108,6 @@ run docker run --rm \
   -v "$GITHUB_PATH:$GITHUB_PATH" \
   -v "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE" \
   -w "$GITHUB_WORKSPACE" \
-  "$docker_image" \
+  "$INPUT_DOCKER_IMAGE" \
   /bin/bash -eo pipefail -c -- \
-  "$run"
+  "$INPUT_RUN"

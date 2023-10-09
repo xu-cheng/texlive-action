@@ -17,11 +17,12 @@ runs:
   steps:
     - shell: bash
       run: |
-        "${GITHUB_ACTION_PATH}/action.sh" \
-          "${{ inputs.scheme }}" \
-          "${{ inputs.texlive_version }}" \
-          "${{ inputs.docker_image }}" \
-          "${{ inputs.run }}"
+        "${GITHUB_ACTION_PATH}/action.sh"
+      env:
+        INPUT_RUN: ${{ inputs.run }}
+        INPUT_SCHEME: ${{ inputs.scheme }}
+        INPUT_TEXLIVE_VERSION: ${{ inputs.texlive_version }}
+        INPUT_DOCKER_IMAGE: ${{ inputs.docker_image }}
 branding:
   icon: book
   color: blue
