@@ -10,7 +10,7 @@ random_token() {
 run() {
   token="$(random_token)"
   echo "::stop-commands::${token}"
-  echo -e "\033[1;34m$*\033[0m"
+  echo -e "\033[1;34m${*@Q}\033[0m"
   echo "::${token}::"
   "$@"
 }
