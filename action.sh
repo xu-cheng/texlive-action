@@ -2,8 +2,13 @@
 
 set -eo pipefail
 
+random_token() {
+  tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 32
+  echo ""
+}
+
 run() {
-  token="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 10)"
+  token="$(random_token)"
   echo "::stop-commands::${token}"
   echo -e "\033[1;34m$*\033[0m"
   echo "::${token}::"
