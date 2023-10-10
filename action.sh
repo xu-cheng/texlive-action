@@ -46,6 +46,11 @@ if [[ -z "$INPUT_DOCKER_IMAGE" ]]; then
     error "TeX Live version $INPUT_TEXLIVE_VERSION is not supported. The currently supported versions are 2020-2023 or latest."
     ;;
   esac
+
+  if [[ -z "$INPUT_SCHEME" ]]; then
+    INPUT_SCHEME="full"
+  fi
+
   INPUT_DOCKER_IMAGE="ghcr.io/xu-cheng/texlive-$INPUT_SCHEME:$image_version"
 fi
 

@@ -7,7 +7,6 @@ inputs:
     required: true
   scheme:
     description: The scheme of TeXLive to be used, either full or small
-    default: full
   texlive_version:
     description: The version of TeXLive to be used
   docker_image:
