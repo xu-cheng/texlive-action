@@ -17,6 +17,10 @@ jobs:
           texlive_version: ${{ matrix.texlive_version }}
           run: |
             apk add make
+            VERSION="${{ matrix.texlive_version }}"
+            if [[ "$VERSION" != latest ]]; then
+              tlmgr option repository "https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/$VERSION/tlnet-final"
+            fi
             tlmgr install blindtext
             cd test && make
       - name: Check pdf files
