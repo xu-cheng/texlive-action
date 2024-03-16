@@ -30,8 +30,11 @@ fi
 
 if [[ -z "$INPUT_DOCKER_IMAGE" ]]; then
   case "$INPUT_TEXLIVE_VERSION" in
-  "" | "latest" | "2023")
+  "" | "latest" | "2024")
     image_version="latest"
+    ;;
+  "2023")
+    image_version="20240301"
     ;;
   "2022")
     image_version="20230301"
@@ -43,7 +46,7 @@ if [[ -z "$INPUT_DOCKER_IMAGE" ]]; then
     image_version="20210301"
     ;;
   *)
-    error "TeX Live version $INPUT_TEXLIVE_VERSION is not supported. The currently supported versions are 2020-2023 or latest."
+    error "TeX Live version $INPUT_TEXLIVE_VERSION is not supported. The currently supported versions are 2020-2024 or latest."
     ;;
   esac
 
