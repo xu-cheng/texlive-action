@@ -11,7 +11,7 @@ jobs:
             scheme: small
           - texlive_version: latest
             os: debian
-            scheme: small
+            scheme: full
           - texlive_version: 2024
             os: alpine
             scheme: full
