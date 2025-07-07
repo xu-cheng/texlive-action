@@ -1,91 +1,170 @@
 # texlive-action
 
-[![GitHub Actions Status](https://github.com/xu-cheng/texlive-action/workflows/Test%20Github%20Action/badge.svg)](https://github.com/xu-cheng/texlive-action/actions)
+[![GitHub Actions Status](https://github.com/xu-cheng/texlive-action/workflows/test/badge.svg)](https://github.com/xu-cheng/texlive-action/actions)
 
-GitHub Action to run arbitrary commands in a [TeXLive](https://www.tug.org/texlive/) environment.
+A GitHub Action that provides a complete [TeXLive](https://www.tug.org/texlive/) environment for running LaTeX-related commands and scripts.
 
-It comes with two flavors, `full` and `small`. The `full` action has all TeXLive packages installed. The `small` one however only has basic packages installed to reduce its size. You can use `tlmgr install <package>` to install the missing packages.
-The base image is [alpine](https://alpinelinux.org). Use `apk add <package>` to install additional system packages.
-See [latex-docker](https://github.com/xu-cheng/latex-docker) for the scripts to build the respective docker images.
+> [!TIP]
+> This action is designed for running custom commands, scripts, and build processes in a LaTeX environment. If you only need to compile LaTeX documents, consider using [latex-action](https://github.com/xu-cheng/latex-action) instead.
 
-This action is suitable to run arbitrary commands in a LaTeX environment. If you simply want to compile LaTeX documents, [latex-action](https://github.com/xu-cheng/latex-action) is better recommended.
+## Features
+
+- 🐳 **Containerized**: Runs in a [Docker container](https://github.com/xu-cheng/latex-docker/) with a complete [TeXLive](https://www.tug.org/texlive/) installation.
+- 📅 **Version flexibility**: Supports both the latest and historic versions of TeXLive (2020-2025).
+- 🐧 **Multi-platform**: Support both [Alpine](https://alpinelinux.org) and [Debian](https://www.debian.org/)-based Docker images.
+- 📦 **Two installation schemes**: Choose between full or small TeXLive installation.
+  - **Full scheme**: Complete TeXLive installation with all packages
+  - **Small scheme**: Minimal TeXLive installation with basic packages only (smaller image size)
+- ⚙️ **Fully customizable**: Run arbitrary commands to build your custom LaTeX documents.
+
+All Docker images are built using scripts from [latex-docker](https://github.com/xu-cheng/latex-docker).
 
 ## Inputs
 
-* `run`: Arbitrary bash codes to be executed. It will be executed in the form of `bash -eo pipefail -c {input}`.
-* `scheme`: The scheme of TeXLive to be used, either full or small. By default, full TeXLive is used. This input cannot co-exist with `docker_image` input.
-* `texlive_version`: The version of TeXLive to be used. Supported inputs include 2020, 2021, 2022, 2023, 2024, 2025, and latest. By default the latest TeXLive is used. This input cannot co-exist with `docker_image` input.
-* `docker_image`: Custom which docker image to be used. Only [latex-docker images](https://github.com/xu-cheng/latex-docker/pkgs/container/texlive-full) are supported.
+Configure the action by providing these inputs in the `with` section:
 
-## Example
+### Required Inputs
 
-* Run commands in a **full** TeXLive environment.
+- **`run`** (required)
+  Bash commands to execute. Commands are executed with `bash -eo pipefail -c {input}`.
 
   ```yaml
-  on: [push]
-  jobs:
-    build_latex:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: xu-cheng/texlive-action@v2
-          with:
-            scheme: full
-            run: |
-              apk add make
-              make
+  - uses: xu-cheng/texlive-action@v3
+    with:
+      run: |
+        latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode main.tex
   ```
 
-* Run commands in a **small** TeXLive environment.
+### Optional Inputs
+
+- **`texlive_version`**
+  TeXLive version to use (2020-2025 or 'latest'). Defaults to 'latest'. Cannot be used with `docker_image`.
 
   ```yaml
-  on: [push]
-  jobs:
-    build_latex:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: xu-cheng/texlive-action@v2
-          with:
-            scheme: small
-            run: |
-              apk add make
-              make
+  - uses: xu-cheng/texlive-action@v3
+    with:
+      texlive_version: 2024
+      run: ...
   ```
 
-* Run commands in a 2022 TeXLive environment.
+- **`os`**
+  Base operating system for the Docker image (`alpine` or `debian`). Defaults to `alpine`.
 
   ```yaml
-  on: [push]
-  jobs:
-    build_latex:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: xu-cheng/texlive-action@v2
-          with:
-            texlive_version: 2022
-            run: |
-              apk add make
-              make
+  - uses: xu-cheng/texlive-action@v3
+    with:
+      os: debian
+      run: ...
   ```
 
-* Run commands using custom docker image.
+- **`scheme`**
+  TeXLive installation scheme (`full` or `small`). Defaults to `full`. Cannot be used with `docker_image`. When using `small`, `os` must be `alpine` and `texlive_version` must be `latest`.
 
   ```yaml
-  on: [push]
-  jobs:
-    build_latex:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: xu-cheng/texlive-action@v2
-          with:
-            docker_image: ghcr.io/xu-cheng/texlive-full:20230801
-            run: |
-              apk add make
-              make
+  - uses: xu-cheng/texlive-action@v3
+    with:
+      texlive_version: latest
+      os: alpine
+      scheme: small
+      run: ...
   ```
+
+- **`docker_image`**
+  Custom Docker image to use (overrides `texlive_version`, `os`, and `scheme`). We recommend using [latex-docker images](https://github.com/xu-cheng/latex-docker/).
+
+  ```yaml
+  - uses: xu-cheng/texlive-action@v3
+    with:
+      docker_image: ghcr.io/xu-cheng/texlive-alpine@sha256:<hash>
+      run: ...
+  ```
+
+## Examples
+
+### Basic LaTeX compilation
+
+```yaml
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          run: |
+            latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode main.tex
+```
+
+### Using a small TeXLive installation
+
+```yaml
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: small
+          run: |
+            # Install additional packages if needed
+            tlmgr install collection-fontsextra
+            pdflatex main.tex
+```
+
+### Using Debian-based environment
+
+```yaml
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          os: debian
+          run: |
+            # Install system dependencies
+            export DEBIAN_FRONTEND=noninteractive
+            apt-get update -y
+            apt-get install -y make
+            make
+```
+
+### Using a specific TeXLive version
+
+```yaml
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          texlive_version: 2024
+          run: |
+            latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode main.tex
+```
+
+### Using a custom Docker image
+
+```yaml
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          docker_image: ghcr.io/xu-cheng/texlive-alpine@sha256:<hash>
+          run: |
+            latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode main.tex
+```
 
 ## License
 
