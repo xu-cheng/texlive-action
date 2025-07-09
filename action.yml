@@ -1,6 +1,6 @@
 name: GitHub Action with TeXLive
 description: Run arbitrary commands in a TeXLive environment.
-author: Cheng XU
+author: Cheng Xu
 inputs:
   run:
     description: "Arbitrary bash codes to be executed"
