@@ -126,12 +126,7 @@ jobs:
       - uses: xu-cheng/texlive-action@v3
         with:
           os: debian
-          run: |
-            # Install system dependencies
-            export DEBIAN_FRONTEND=noninteractive
-            apt-get update -y
-            apt-get install -y make
-            make
+          run: make
 ```
 
 ### Using a specific TeXLive version
