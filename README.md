@@ -89,7 +89,7 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: xu-cheng/texlive-action@v3
         with:
           run: |
@@ -104,7 +104,7 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: xu-cheng/texlive-action@v3
         with:
           scheme: small
@@ -122,7 +122,7 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: xu-cheng/texlive-action@v3
         with:
           os: debian
@@ -142,7 +142,7 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: xu-cheng/texlive-action@v3
         with:
           texlive_version: 2024
@@ -158,7 +158,7 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: xu-cheng/texlive-action@v3
         with:
           docker_image: ghcr.io/xu-cheng/texlive-alpine@sha256:<hash>
