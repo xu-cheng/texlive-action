@@ -50,7 +50,7 @@ fi
 
 if [[ -z "$INPUT_DOCKER_IMAGE" ]]; then
   case "$INPUT_TEXLIVE_VERSION" in
-    "" | "latest" | "2025")
+    "" | "latest" | "2026")
       if [[ "$INPUT_OS" = "alpine" ]]; then
         if [[ "$INPUT_SCHEME" = "full" ]]; then
           INPUT_DOCKER_IMAGE="ghcr.io/xu-cheng/texlive-alpine:latest"
@@ -65,7 +65,7 @@ if [[ -z "$INPUT_DOCKER_IMAGE" ]]; then
         fi
       fi
       ;;
-    "2020" | "2021" | "2022" | "2023" | "2024")
+    "2020" | "2021" | "2022" | "2023" | "2024" | "2025")
       if [[ "$INPUT_SCHEME" = "full" ]]; then
         if [[ "$INPUT_OS" = "alpine" ]]; then
           INPUT_DOCKER_IMAGE="ghcr.io/xu-cheng/texlive-historic-alpine:$INPUT_TEXLIVE_VERSION"
