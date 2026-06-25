@@ -28,6 +28,7 @@ jobs:
           os: ${{ matrix.os }}
           scheme: ${{ matrix.scheme }}
           run: |
+            tlmgr update --self || true
             tlmgr install blindtext
             cd test && make
       - name: Check pdf files
